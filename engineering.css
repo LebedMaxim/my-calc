@@ -1,0 +1,418 @@
+body {
+  background-color: #242424;
+  font-family: Segoe UI, Serif, Times, Georgia, "Times New Roman";
+  font-size: medium;
+  margin: 0px;
+  padding: 0px;
+  color: white;
+}
+
+header.top {
+  background-color: #07b3d1;
+  margin: 10px 10px 0px 10px;
+  font-size: 120%;
+  text-align: center;
+  padding: 1px;
+}
+
+.main, #logMem {
+  display: table-cell;
+  background: rgb(70, 70, 70);
+  padding: 15px;
+  vertical-align: top;
+}
+
+.main {
+  font-size: 105%;
+  width: 334px;
+  height: 495px;
+  overflow: auto;
+}
+
+footer {
+  background-color: rgb(70, 70, 70);
+  text-align: center;
+  padding: 15px;
+  margin: 0px 10px 10px 10px;
+  font-size: 90%;
+}
+
+a:link {
+  text-decoration: none;
+  border-bottom: thin dotted #b76666;
+  color: white;
+}
+
+a:visited {
+  text-decoration: none;
+  border-bottom: thin dotted #675c47;
+  color: white;
+}
+
+#tableContainer {
+  display: table;
+  border-spacing: 10px;
+}
+
+#tableRow {
+  display: table-row;
+}
+
+nav ul li a:link, nav ul li a:visited {
+  border-bottom: none;
+  font-weight: bold;
+}
+
+/*nav ul li.selected {
+  background-color: #07b3d1;
+}*/
+
+/*ul.contentContainer li.selected {
+.titleContent.selected {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-decoration-color: #07b3d1;
+}*/
+
+table {
+  margin-left: 10px;
+  margin-right: 10px;
+  border-collapse: collapse;
+}
+
+.trigHidden, .funcHidden, .secondHidden {
+  position: absolute;
+}
+
+.trigHidden {
+  z-index: 99;
+  top: 215px;
+  left: 67px;
+}
+
+.funcHidden {
+  z-index: 99;
+  top: 215px;
+  left: 192px;
+}
+
+.secondHidden {
+  top: 257px;
+  left: 67px;
+}
+
+.main table tr td table, .secondHidden {
+  display: none;
+}
+
+.main table tr td table.show, .secondHidden.show {
+  display: block;
+}
+
+td, th {
+  border: thin dotted gray;
+}
+
+th {
+  background-color: #07b3d1;
+}
+
+button {
+  border: none;
+  outline: none;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+.button {
+  font-size: 16px;
+  padding: 12px 16px;
+}
+
+.button.grey {
+  height: 40px;
+  width: 60px;
+  background: rgb(70, 70, 70);
+}
+
+.button.blue {
+  height: 40px;
+  width: 60px;
+  background: #07b3d1;
+}
+
+.button.memAction {
+  height: 30px;
+  width: 40px;
+  background: rgb(70, 70, 70);
+}
+
+.sandwich {
+  background: rgb(70, 70, 70);
+  font-size: 33px;
+}
+
+.sandwich.opened {
+  background: none;
+  box-shadow: none;
+}
+
+.button.grey2 {
+  width: 100%;
+  background: rgb(70, 70, 70);
+}
+
+.button.grey2.opened {
+  position: relative;
+  z-index: 100;
+}
+
+.button:hover.grey, :hover.grey2, .sandwich:hover {
+  background: rgb(90, 90, 90);
+  box-shadow: 0 1px 3px rgb(0, 0, 0);
+}
+
+/*.content div:hover {
+  background: rgb(90, 90, 90);
+}*/
+
+.logItem:hover, .memItem:hover {
+  background: rgb(90, 90, 90);
+}
+
+.button.blue:hover, .memAction:hover {
+  background: #0694ad;
+}
+
+.sandwich:hover.opened {
+  background: none;
+  box-shadow: 0 1px 3px rgb(255, 255, 255);
+}
+
+.button.grey:hover.opened, .grey2:hover.opened {
+  /*background: none;*/
+  box-shadow: 0px 2px 3px #07b3d1;
+}
+
+.button:active.grey, :active.grey2, .sandwich:active {
+  box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.button:active.blue, :active.memAction {
+  background: #06768a;
+}
+
+.clearLog, .clearMem {
+  position: absolute;
+  top: 495px;
+  left: 646px;
+  display: none;
+}
+
+.clearLog.show, .clearMem.show {
+  display: block;
+}
+
+.sandwich:active.opened {
+  box-shadow: 0px 2px 3px rgba(255, 255, 255, 0.973);
+}
+
+#bigArea, #smallArea, #content {
+  text-align: right;
+}
+
+#smallArea {
+  height: 22px;
+}
+
+#bigArea {
+  font-size: 170%;
+  height: 38px;
+  /*overflow: auto;*/
+}
+
+/*Для обращения к text-decoration из JavaScript нужно писать следующую конструкцию: object.style.textDecoration="VALUE"*/
+
+body.contentOpened {
+  overflow: hidden;
+}
+
+.hiddenOverley {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 98;
+  background: #000000;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  transition: opacity 1s;
+}
+
+.hiddenOverley.show {
+  height: 100%;
+  width: 100%;
+  opacity: 0.5;
+  transition: opacity 1s;
+}
+
+/*.hiddenContent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.hiddenContent.show {
+  height: 100%;
+  width: 100%;
+}*/
+
+.sideMenu {
+  position: fixed;
+  z-index: 100;
+  width: 300px;
+  height: 100%;
+  left: -300px;
+  top: 0px;
+  background: rgb(70, 70, 70);
+  transition: left 0.4s ease;
+  overflow: auto;
+}
+
+.sideMenu .text {
+  display: -webkit-box;
+  display: flex;
+  padding: 10px !important;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: inherit;
+  text-align: center;
+  background: #07b3d1;
+  letter-spacing: 1px;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.sideMenu .side-tel {
+  font-size: 0.8rem;
+}
+
+.sideMenu .text a {
+  color: white;
+}
+
+.sideMenu.show {
+  left: 0px;
+}
+
+.sideMenu ul {
+  background: none;
+  height: auto;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sideMenu ul li {
+  line-height: 60px;
+  border-top: 1px solid rgb(70, 70, 70);
+  margin: 0;
+}
+
+/*.sideMenu ul li:last-child {
+  border-bottom: 1px solid rgba(255, 0, 0, 0.05);
+}*/
+
+.sideMenu ul li a {
+  box-sizing: border-box;
+  position: relative;
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding-left: 30px;
+  font-weight: 500;
+  display: block;
+  width: 100%;
+  border-left: 5px solid rgb(70, 70, 70);
+}
+
+.sideMenu ul li.currentMenuItem a {
+  border-left-color: #0694ad;
+}
+
+.sideMenu ul li a:hover {
+  cursor: pointer;
+  background: none;
+  border-left-color: #07b3d1;
+}
+
+.button.log, .mem {
+  height: 40px;
+  width: 100px;
+  background: rgb(70, 70, 70);
+}
+
+.button.log:hover, .mem:hover {
+  color: rgb(207, 207, 207);
+}
+
+.mainContainer button.opened, .button.grey.second.opened {
+  box-shadow: 0px 2px 3px #07b3d1;
+}
+
+.log.opened, .mem.opened {
+  text-decoration: underline;
+  text-decoration-color: #07b3d1;
+  text-decoration-thickness: 3px;
+}
+
+.contentContainer {
+  margin: 0 0 35px;
+  padding: 0;
+  width: 250px;
+  height: 420px;
+  overflow: auto;
+}
+
+/*.content.show {
+  display: block;
+}*/
+
+.noBorder {
+  border: none;
+}
+
+.nomemory, .inactive {
+  /*display: none;*/
+  color: rgb(100, 100, 100);
+}
+
+.nomemory:hover.grey, .nomemory:active.grey, .inactive:hover.grey, 
+.inactive:active.grey, .inactive:hover.grey2, .inactive:active.grey2 {
+  background: none;
+  box-shadow: none;
+}
+
+.memAction {
+  display: none;
+}
+
+.memAction.opened {
+  display: inline;
+}
+
+.memItem {
+  height: 63px;
+}

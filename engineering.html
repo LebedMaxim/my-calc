@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Инженерный</title>
+	<link rel="stylesheet" type="text/css" href="engineering.css">
+</head>
+
+<body>
+	<!--<header class="top">
+		<p>КАЛЬКУЛЯТОР</p>
+	</header>-->
+
+	<div id="tableContainer">
+		<div id="tableRow">
+			<button class="sandwich">&equiv;</button>
+			<nav class="sideMenu">
+				<div class="text">
+					<button class="sandwich opened">&equiv;</button>
+					Калькулятор
+				</div>
+				<ul>
+					<li><a href="index.html">ОБЫЧНЫЙ</a></li>
+					<li class="currentMenuItem"><a href="engineering.html">ИНЖЕНЕРНЫЙ</a></li>
+				</ul>
+			</nav>
+
+			<section class="main">
+				<table id="table">
+					<div id="smallArea"></div>
+					<caption id="bigArea"></caption>
+					<tr>
+						<td class="noBorder"><button id="deg" class="button grey active">DEG</button></td>
+						<td class="noBorder"><button id="fe" class="button grey active">F-E</button></td>
+					</tr>
+					<tr id="memory">
+						<td class="noBorder"><button data-actmemory="mc" class="button grey mcr nomemory active">MC</button>
+						</td>
+						<td class="noBorder"><button data-actmemory="mr" class="button grey mcr nomemory active">MR</button>
+						</td>
+						<td class="noBorder"><button data-actmemory="mPlus" class="button grey active">M+</button></td>
+						<td class="noBorder"><button data-actmemory="mMinus" class="button grey active">M-</button></td>
+						<td class="noBorder"><button data-actmemory="ms" class="button grey active">MS</button></td>
+					</tr>
+					<tr>
+						<td colspan="3" class="mainContainer noBorder"><button class="button grey2 active">&#8895;
+								Тригонометрия &or;</button>
+							<table class="trigHidden">
+								<tr>
+									<td><button id="trigSecond" class="button grey">2<sup>nd</sup></button></td>
+									<td><button data-actbrack="sin" id="sin" class="button grey trig">sin</button></td>
+									<td><button data-actbrack="cos" id="cos" class="button grey trig">cos</button></td>
+									<td><button data-actbrack="tan" id="tan" class="button grey trig">tan</button></td>
+								</tr>
+								<tr>
+									<td><button id="hyp" class="button grey">hyp</button></td>
+									<td><button data-actbrack="sec" id="sec" class="button grey trig">sec</button></td>
+									<td><button data-actbrack="csc" id="csc" class="button grey trig">csc</button></td>
+									<td><button data-actbrack="cot" id="cot" class="button grey trig">cot</button></td>
+								</tr>
+							</table>
+						</td>
+						<td colspan="2" class="mainContainer noBorder"><button class="button grey2 active">&fnof; Функция
+								&or;</button>
+							<table class="funcHidden">
+								<tr>
+									<td><button data-actbrack="moduleX" class="button grey">|x|</button></td>
+									<td><button data-actbrack="floorX" class="button grey">&#8970;x&#8971;</button></td>
+									<td><button data-actbrack="ceilX" class="button grey">&#8968;x&#8969;</button></td>
+								</tr>
+								<tr>
+									<td><button id="rand" class="button grey">rand</button></td>
+									<td><button id="dms" class="button grey">&#8594;dms</button></td>
+									<td><button id="deg" class="button grey">&#8594;deg</button></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td><button class="button grey second active">2<sup>nd</sup></button>
+							<table class="secondHidden">
+								<tr>
+									<td><button data-actbrack="cubeX" class="button grey">x<sup>3</sup></button></td>
+								</tr>
+								<tr>
+									<td><button data-actbrack="cubeRootX" class="button grey">&#8731;x</button></td>
+								</tr>
+								<tr>
+									<td><button data-operator="yRootX" value="yroot"
+											class="button grey"><sup>y</sup>&radic;x</span></button>
+									</td>
+								</tr>
+								<tr>
+									<td><button data-actbrack="twoX" class="button grey">2<sup>x</sup></button></td>
+								</tr>
+								<tr>
+									<td><button data-operator="lgYx" value="logBase"
+											class="button grey">lg<sub>y</sub>x</button></td>
+								</tr>
+								<tr>
+									<td><button data-actbrack="eX" class="button grey">e<sup>x</sup></button></td>
+								</tr>
+							</table>
+						</td>
+						<td><button id="pi" class="button grey active">&pi;</button></td>
+						<td><button id="euler" class="button grey active">е</button></td>
+						<td><button id="clean" class="button grey">С</button></td>
+						<td><button id="backSpace" class="button grey">&larr;</button></td>
+					</tr>
+					<tr>
+						<td><button data-actbrack="sqrX" class="button grey active">x<sup>2</sup></button></td>
+						<td><button data-actbrack="oneDivideX" class="button grey active">1/x</button></td>
+						<td><button data-actbrack="moduleX" class="button grey active">|x|</button></td>
+						<td><button id="exp" class="button grey active">exp</button></td>
+						<td><button data-operator="mod" value="Mod" class="button grey active">mod</button></td>
+					</tr>
+					<tr>
+						<td><button data-actbrack="sqrtX" class="button grey active">&radic;x</button></td>
+						<td><button id="startBracket" class="button grey active">(</button></td>
+						<td><button id="endBracket" class="button grey active">)</button></td>
+						<td><button data-actbrack="fact" class="button grey active">n!</button></td>
+						<td><button data-operator="divide" value="/" class="button grey active">&divide;</button></td>
+					</tr>
+					<tr>
+						<td><button data-operator="xY" value="^" class="button grey active">x<sup>y</sup></button></td>
+						<td><button data-number value="7" class="button grey">7</button></td>
+						<td><button data-number value="8" class="button grey">8</button></td>
+						<td><button data-number value="9" class="button grey">9</button></td>
+						<td><button data-operator="multiply" value="*" class="button grey active">&#10006;</button></td>
+					</tr>
+					<tr>
+						<td><button data-actbrack="tenX" class="button grey active">10<sup>x</sup></button></td>
+						<td><button data-number value="4" class="button grey">4</button></td>
+						<td><button data-number value="5" class="button grey">5</label></button></td>
+						<td><button data-number value="6" class="button grey">6</button></td>
+						<td><button data-operator="minus" value="-" class="button grey active">-</button></td>
+					</tr>
+					<tr>
+						<td><button data-actbrack="lg" class="button grey active">log</button></td>
+						<td><button data-number value="1" class="button grey">1</td>
+						<td><button data-number value="2" class="button grey">2</button></td>
+						<td><button data-number value="3" class="button grey">3</button></td>
+						<td><button data-operator="plus" value="+" class="button grey active">+</button></td>
+					</tr>
+					<tr>
+						<td><button data-actbrack="ln" class="button grey active">ln</button></td>
+						<td><button data-actbrack="negate" class="button grey active">+/-</button></td>
+						<td><button data-number value="0" class="button grey">0</button></td>
+						<td><button id="fract" class="button grey active">,</button></td>
+						<td><button data-equal value="=" class="button blue">=</button></td>
+					</tr>
+				</table>
+			</section>
+
+			<section id="logMem" class="logMemContainer">
+				<button data-logmem value="log" class="button log opened">Журнал</button>
+				<button data-logmem value="mem" class="button mem">Память</button>
+				<div class="contentContainer">
+					<div id="content" class="content">Журнала ещё нет</div>
+					<button id="clearLog" class="button grey clearLog">&#128465;</button>
+					<button data-actmemory="mc" class="button grey clearMem">&#128465;</button>
+				</div>
+			</section>
+
+		</div>
+	</div>
+
+	<footer>
+		2022, Максим Лебедь
+		<br>
+		maxle130691@gmail.com
+	</footer>
+
+	<div class="hiddenOverley"></div>
+	<script src="engineering.js"></script>
+
+</body>
+
+</html>
