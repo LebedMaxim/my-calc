@@ -1,37 +1,42 @@
-let x; let lastX; let operator; let isNextNumber; let isClickedLogItem;
-let isChangedOperator; let absArr; let firstOperator; /* let beforeBrack; */
-let selectedMemItem;
+let x, lastX, isClickedLogItem, isChangedOperator, absArr, firstOperator, selectedMemItem,
+    openedBrackets, closedBrackets, b;
 
-let trigSecondIsOpened = false; let hypIsOpened = false; let error = false;
+let trigSecondIsOpened = false;
+let hypIsOpened = false;
+let error = false;
 let isInterimResult = false;
 
-let angleUnit = "DEG"; let unclosedBrackets = 0;
-let arrCalc = []; let arrSmall = []; let arrLog = []; let arrMem = []; let arrTrigElems = [];
+let angleUnit = "DEG";
+let unclosedBrackets = 0;
+let arrCalc = [];
+let arrSmall = [];
+let arrLog = [];
+let arrMem = [];
+let arrTrigElems = [];
 
-const bigArea = document.getElementById("bigArea"); bigArea.innerHTML = 0;
-const smallArea = document.getElementById("smallArea");
 const content = document.getElementById("content");
 const mcr = document.querySelectorAll(".mcr");
-const trigAndFuction = document.querySelectorAll(".grey2");
+const greySecond = document.querySelectorAll(".grey2");
 const trigElems = document.getElementsByClassName("button grey trig");
 const backSpace = document.getElementById("backSpace");
-const fract = document.getElementById("fract");
+const fraction = document.getElementById("fraction");
 const clearLog = document.getElementById("clearLog");
 const startBracket = document.getElementById("startBracket");
 const endBracket = document.getElementById("endBracket");
 const pi = document.getElementById("pi");
 const euler = document.getElementById("euler");
 const exp = document.getElementById("exp");
-const deg = document.getElementById("deg");
+const angle = document.getElementById("angle");
 const rand = document.getElementById("rand");
 const clean = document.getElementById("clean");
 const trigSecond = document.getElementById("trigSecond");
 const hyp = document.getElementById("hyp");
-const sandwich = document.querySelectorAll(".sandwich");
-const hiddenOverley = document.querySelector(".hiddenOverley");
+const hiddenOverlay = document.querySelector(".hiddenOverlay");
 const secondButton = document.querySelector(".button.grey.second");
+const tableRow = document.getElementById("tableRow");
+const tableMain = document.getElementById("tableMain");
 
-const arrActions = ["abs(", "floor(", "ceil(", "dms(", "degrees(",
+const arrActions = ["abs(", "floor(", "ceil(",
   "sqr(", "1/(", "&radic;(", "fact(", "10^(", "log(", "ln(",
   "cube(", "cuberoot(", "2^(", "e^(", "negate(",
 
@@ -64,26 +69,27 @@ let factorial = (n, output) => {
 };
 
 function calcOutside(arr) {
-  let prevX; let k;
+  let prevX;
+  let k;
   for (k = 0; k < arr.length; k++) {
-    if (["/", "*", "Mod", "^", "yroot", "logBase"].includes(arr[k])) {
+    if (["/", "*", "Mod", "^", "root", "logBase"].includes(arr[k])) {
       prevX = parseFloat(arr[k - 1]);
       operator = arr[k];
       lastX = parseFloat(arr[k + 1]);
       isInterimResult = true;
       if (arr[k] === "/") {
-        arr.splice(k - 1, 3, parseFloat((prevX / lastX)));
+        arr.splice(k - 1, 3, parseFloat(`${prevX / lastX}`));
       } else if (arr[k] === "*") {
-        arr.splice(k - 1, 3, parseFloat((prevX * lastX)));
+        arr.splice(k - 1, 3, parseFloat(`${prevX * lastX}`));
       } else if (arr[k] === "Mod") {
-        arr.splice(k - 1, 3, parseFloat((prevX % lastX)));
+        arr.splice(k - 1, 3, parseFloat(`${prevX % lastX}`));
       } else if (arr[k] === "^") {
-        arr.splice(k - 1, 3, parseFloat((prevX ** lastX)));
-      } else if (arr[k] === "yroot") {
-        arr.splice(k - 1, 3, parseFloat((prevX ** (1 / lastX))));
+        arr.splice(k - 1, 3, parseFloat(`${prevX ** lastX}`));
+      } else if (arr[k] === "root") {
+        arr.splice(k - 1, 3, parseFloat(`${prevX ** (1 / lastX)}`));
       } else if (arr[k] === "logBase") {
-        Math.logb = (number, base) => Math.log(number) / Math.log(base);
-        arr.splice(k - 1, 3, parseFloat((Math.logb(prevX, lastX))));
+        Math.logB = (number, base) => Math.log(number) / Math.log(base);
+        arr.splice(k - 1, 3, parseFloat((Math.logB(prevX, lastX))));
       }
       k = 0;
     }
@@ -95,16 +101,16 @@ function calcOutside(arr) {
       lastX = parseFloat(arr[k + 1]);
       isInterimResult = true;
       if (arr[k] === "-") {
-        arr.splice(k - 1, 3, parseFloat((prevX - lastX)));
+        arr.splice(k - 1, 3, parseFloat(`${prevX - lastX}`));
       } else if (arr[k] === "+") {
-        arr.splice(k - 1, 3, parseFloat((prevX + lastX)));
+        arr.splice(k - 1, 3, parseFloat(`${prevX + lastX}`));
       }
       k = 0;
     }
   }
 }
 
-function calcInBracks(arr) {
+function calcInBrackets(arr) {
   let i = 0;
   for (; i < arr.length; i++) {
     if (arr[i] === ")") {
@@ -117,10 +123,6 @@ function calcInBracks(arr) {
           } else if (arr[j] === "floor(") {
             arr.splice(j, i - j + 1, Math.floor(arrIn));
           } else if (arr[j] === "ceil(") {
-            arr.splice(j, i - j + 1, Math.ceil(arrIn));
-          } else if (arr[j] === "dms(") {
-            arr.splice(j, i - j + 1, Math.ceil(arrIn));
-          } else if (arr[j] === "degrees(") {
             arr.splice(j, i - j + 1, Math.ceil(arrIn));
           } else if (arr[j] === "sqr(") {
             arr.splice(j, i - j + 1, arrIn ** 2);
@@ -269,7 +271,7 @@ function showArrLog() {
       document.querySelector(".clearLog").classList.add("show");
       content.innerHTML = "";
       for (let i = 0; i < arrLog.length; i++) {
-        content.innerHTML = `<div class="logItem">${arrLog[i][0].join(" ")}<br><big><big> ${arrLog[i][1]}</big></big></div><br>
+        content.innerHTML = `<div class="logItem">${arrLog[i][0].join(" ")}<br><span class="logItemResult"> ${arrLog[i][1]}</span></div><br>
             ${content.innerHTML}`;
       }
     } else {
@@ -278,11 +280,12 @@ function showArrLog() {
     }
   }
 }
+
 function showLogItem(e) {
   isClickedLogItem = true;
   let text = e.currentTarget.textContent;
   let arrLogItem = text.slice(0, text.indexOf("=") + 1).split(" ");
-  bigArea.innerHTML = text.slice(text.indexOf("=") + 2).split(" ");
+  bigArea.innerHTML = `${text.slice(text.indexOf("=") + 2).split(" ")}`;
   arrSmall = arrLogItem;
   smallArea.innerHTML = arrSmall.slice(0, arrSmall.length).join("");
   arrCalc = arrLogItem.slice(0, arrLogItem.length - 1);
@@ -320,7 +323,7 @@ function selectMemItem(e) {
 }
 
 function hoverMemItem() {
-  if (document.querySelector(".mem.opened")) {
+  if (document.querySelector(".memory.opened")) {
     let memItem = document.querySelectorAll(".memItem");
     for (let i = 0; i < memItem.length; i++) {
       memItem[i].addEventListener("mouseover", selectMemItem);
@@ -329,12 +332,12 @@ function hoverMemItem() {
 }
 
 function showArrMem() {
-  if (document.querySelector(".mem.opened")) {
+  if (document.querySelector(".memory.opened")) {
     if (arrMem.length) {
-      document.querySelector(".clearMem").classList.add("show");
+      document.querySelector(".clearMemory").classList.add("show");
       content.innerHTML = "";
       for (let i = 0; i < arrMem.length; i++) {
-        content.innerHTML = `<div data-memitem class="memItem"><big><big>${arrMem[i]}</big></big><br>
+        content.innerHTML = `<div data-memitem class="memItem"><span class="logItemResult">${arrMem[i]}</span><br>
                 <button onclick="arrMem.splice(${i}, 1);
                     showArrMem();"
                     class="button memAction">MC</button>
@@ -349,9 +352,8 @@ function showArrMem() {
       }
     } else {
       content.innerHTML = "В памяти ничего не сохранено";
-      document.querySelector(".clearMem").classList.remove("show");
-      for (let i = 0; i < mcr.length; i++) mcr[i].classList.add("nomemory");
-      // for (let elem of mcr) elem.classList.add("nomemory");
+      document.querySelector(".clearMemory").classList.remove("show");
+      for (let i = 0; i < mcr.length; i++) mcr[i].classList.add("noMemory");
     }
   }
 }
@@ -364,18 +366,14 @@ function correctError() {
       inactive[i].classList.remove("inactive");
       inactive[i].classList.add("active");
     }
-    /* for (let elem of inactive) {
-      elem.classList.remove("inactive");
-      elem.classList.add("active");
-    } */
     error = false;
-    bigArea.innerHTML = 0;
+    bigArea.innerHTML = "0";
     smallArea.innerHTML = "";
     operator = null;
     x = null;
     arrCalc.length = 0;
   } else if (bigArea.textContent === "Infinity" || bigArea.textContent === "-Infinity"
-    || bigArea.textContent === "NaN") {
+      || bigArea.textContent === "NaN") {
     bigArea.style.fontSize = "130%";
     bigArea.innerHTML = "Ошибка!";
     let active = document.querySelectorAll(".active");
@@ -383,67 +381,20 @@ function correctError() {
       active[i].classList.remove("active");
       active[i].classList.add("inactive");
     }
-    /* for (let elem of active) {
-      elem.classList.remove("active");
-      elem.classList.add("inactive");
-    } */
     error = true;
   }
 }
 
 function showMemButtons() {
-  for (let i = 0; i < mcr.length; i++) mcr[i].classList.remove("nomemory");
+  for (let i = 0; i < mcr.length; i++) mcr[i].classList.remove("noMemory");
 }
 
 function hideMemButtons() {
-  for (let i = 0; i < mcr.length; i++) mcr[i].classList.add("nomemory");
+  for (let i = 0; i < mcr.length; i++) mcr[i].classList.add("noMemory");
 }
 
-class Memory {
-  constructor(elem) {
-    let name = elem;
-    this.name = name;
-    name.onclick = this.onClick.bind(this);
-  }
-
-  mc() {
-    if (arrMem.length > 0) {
-      arrMem.length = 0;
-      hideMemButtons();
-    }
-  }
-
-  mr() {
-    if (arrMem.length > 0) {
-      bigArea.innerHTML = arrMem[arrMem.length - 1];
-      arrCalc.splice(0, arrCalc.length, arrMem[arrMem.length - 1]);
-    }
-  }
-
-  mPlus() {
-    if (arrMem.length === 0) {
-      arrMem.push(parseFloat(bigArea.textContent));
-      showMemButtons();
-    } else {
-      arrMem[arrMem.length - 1] += parseFloat(bigArea.textContent);
-    }
-  }
-
-  mMinus() {
-    if (arrMem.length === 0) {
-      arrMem.push(parseFloat(bigArea.textContent) * (-1));
-      showMemButtons();
-    } else {
-      arrMem[arrMem.length - 1] -= parseFloat(bigArea.textContent);
-    }
-  }
-
-  ms() {
-    arrMem.push(parseFloat(bigArea.textContent));
-    showMemButtons();
-  }
-
-  onClick(event) {
+tableRow.addEventListener("click", {
+  handleEvent(event) {
     let actMemory = event.target.dataset.actmemory;
     if (actMemory && !error) {
       this[actMemory]();
@@ -452,28 +403,63 @@ class Memory {
       isNextNumber = true;
       smallArea.innerHTML = "";
     }
-  }
-}
-// const tableRow = document.getElementById("tablerow");
-new Memory(tableRow);
+  },
+
+  "mc"() {
+    if (arrMem.length > 0) {
+      arrMem.length = 0;
+      hideMemButtons();
+    }
+  },
+
+  "mr"() {
+    if (arrMem.length > 0) {
+      bigArea.innerHTML = arrMem[arrMem.length - 1];
+      arrCalc.splice(0, arrCalc.length, arrMem[arrMem.length - 1]);
+    }
+  },
+
+  "mPlus"() {
+    if (arrMem.length === 0) {
+      arrMem.push(parseFloat(bigArea.textContent));
+      showMemButtons();
+    } else {
+      arrMem[arrMem.length - 1] += parseFloat(bigArea.textContent);
+    }
+  },
+
+  "mMinus"() {
+    if (arrMem.length === 0) {
+      arrMem.push(parseFloat(bigArea.textContent) * (-1));
+      showMemButtons();
+    } else {
+      arrMem[arrMem.length - 1] -= parseFloat(bigArea.textContent);
+    }
+  },
+
+  "ms"() {
+    arrMem.push(parseFloat(bigArea.textContent));
+    showMemButtons();
+  },
+});
 
 document.addEventListener("click", (event) => {
-  if (event.target.dataset.logmem !== undefined) {
+  if (event.target.dataset.logmemory !== undefined) {
     if (event.target.value === "log") {
       event.currentTarget.querySelector(".log").classList.add("opened");
-      document.querySelector(".mem").classList.remove("opened");
-      document.querySelector(".clearMem").classList.remove("show");
+      document.querySelector(".memory").classList.remove("opened");
+      document.querySelector(".clearMemory").classList.remove("show");
       showArrLog();
       clickLogItem();
     } else {
-      event.currentTarget.querySelector(".mem").classList.add("opened");
+      event.currentTarget.querySelector(".memory").classList.add("opened");
       document.querySelector(".log").classList.remove("opened");
       document.querySelector(".clearLog").classList.remove("show");
       showArrMem();
       hoverMemItem();
     }
   } else if (event.target.dataset.memitem !== undefined) {
-    bigArea.innerHTML = parseFloat(event.target.textContent);
+    bigArea.innerHTML = `${parseFloat(event.target.textContent)}`;
     smallArea.innerHTML = "";
   }
 });
@@ -486,18 +472,18 @@ backSpace.onclick = () => {
   } else if (bigArea.textContent.length > 1 && Number.isFinite(parseFloat(bigArea.textContent))) {
     bigArea.innerHTML = bigArea.textContent.slice(0, bigArea.textContent.length - 1);
   } else {
-    bigArea.innerHTML = 0;
+    bigArea.innerHTML = "0";
   }
 };
 
-fract.onclick = () => {
+fraction.onclick = () => {
   if (!error) {
     isNextNumber = false;
     if (smallArea.textContent.includes("=")) {
-      smallArea.innerHTML = 0;
+      smallArea.innerHTML = "0";
       bigArea.innerHTML = "0.";
     } else if (bigArea.textContent.indexOf(".") === -1) {
-      bigArea.insertAdjacentText("beforeEnd", ".");
+      bigArea.insertAdjacentText("beforeend", ".");
     }
   }
 };
@@ -515,10 +501,10 @@ function hideButtons(buttons) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  hiddenOverley.addEventListener("click", (e) => {
+  hiddenOverlay.addEventListener("click", (e) => {
     e.currentTarget.classList.toggle("show");
     document.querySelector(".sideMenu").classList.remove("show");
-    hideButtons(trigAndFuction);
+    hideButtons(greySecond);
   });
 
   secondButton.addEventListener("click", (e) => {
@@ -528,28 +514,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const pushmenuFunction = () => {
-    document.querySelector(".sideMenu").classList.toggle("show");
-    document.querySelector(".hiddenOverley").classList.toggle("show");
-    document.body.classList.toggle("contentOpened");
-  };
-  for (let i = 0; i < sandwich.length; i++) {
-    sandwich[i].addEventListener("click", pushmenuFunction, false);
-  }
-
   const hidingFunction = (e) => {
     if (!error) {
       let table = e.currentTarget.parentNode.querySelector("table");
       if (table) {
         e.currentTarget.classList.toggle("opened");
         table.classList.toggle("show");
-        document.querySelector(".hiddenOverley").classList.toggle("show");
+        document.querySelector(".hiddenOverlay").classList.toggle("show");
         document.body.classList.toggle("contentOpened");
       }
     }
   };
-  for (let i = 0; i < trigAndFuction.length; i++) {
-    trigAndFuction[i].addEventListener("click", hidingFunction, false);
+  for (let i = 0; i < greySecond.length; i++) {
+    greySecond[i].addEventListener("click", hidingFunction, false);
   }
 
   for (let i = 0; i < trigElems.length; i++) arrTrigElems.push(trigElems[i]);
@@ -571,7 +548,7 @@ document.addEventListener("click", (event) => {
       bigArea.innerHTML = event.target.value;
       isNextNumber = false;
     } else if (bigArea.textContent.length < 13) {
-      bigArea.insertAdjacentText("beforeEnd", event.target.value);
+      bigArea.insertAdjacentText("beforeend", event.target.value);
     }
     changeClean();
   }
@@ -585,23 +562,27 @@ function addExp() {
   } else x = parseFloat(bigArea.textContent);
 }
 
+function getExpression() {
+  openedBrackets = 0;
+  closedBrackets = 1;
+  b = arrCalc.length - 2;
+  while (openedBrackets !== closedBrackets) {
+    if (arrCalc[b] === ")") closedBrackets += 1;
+    if (arrActions.concat("(").includes(arrCalc[b])) openedBrackets += 1;
+    b--;
+  }
+}
+
 function calcInterimResult() {
   let arr;
   if (arrCalc[arrCalc.length - 1] === ")") {
-    let openBrack = 0;
-    let closeBrack = 1;
-    let i = arrCalc.length - 2;
-    while (openBrack !== closeBrack) {
-      if (arrCalc[i] === ")") closeBrack += 1;
-      if (arrActions.concat("(").includes(arrCalc[i])) openBrack += 1;
-      i--;
-    }
-    arr = arrCalc.slice(i + 1, arrCalc.length);
-  } else if (["/", "*", "Mod", "^", "yroot", "logBase",
+    getExpression();
+    arr = arrCalc.slice(b + 1, arrCalc.length);
+  } else if (["/", "*", "Mod", "^", "root", "logBase",
     "-", "+"].includes(arrCalc[arrCalc.length - 1])) {
     arr = arrCalc.slice(0, arrCalc.length - 1);
   }
-  calcInBracks(arr);
+  calcInBrackets(arr);
   calcOutside(arr);
   bigArea.innerHTML = arr[arr.length - 1];
   smallArea.innerHTML = arrCalc.slice(0, arrCalc.length).join("");
@@ -620,10 +601,10 @@ document.addEventListener("click", (event) => {
       isChangedOperator = false;
       firstOperator = operator;
       calcInterimResult();
-    } else if (["/", "*", "Mod", "^", "yroot", "logBase",
+    } else if (["/", "*", "Mod", "^", "root", "logBase",
       "-", "+"].includes(arrCalc[arrCalc.length - 1])) {
       if ((firstOperator === "-" || firstOperator === "+") && isInterimResult) {
-        if ((["/", "*", "Mod", "^", "yroot", "logBase"].includes(operator)) && !isChangedOperator) {
+        if ((["/", "*", "Mod", "^", "root", "logBase"].includes(operator)) && !isChangedOperator) {
           arrCalc.pop();
           arrCalc.unshift("(");
           arrCalc.push(")", operator);
@@ -641,7 +622,7 @@ document.addEventListener("click", (event) => {
 
 document.addEventListener("click", (event) => {
   if (event.target.dataset.equal !== undefined) {
-    if (["/", "*", "Mod", "^", "yroot", "logBase",
+    if (["/", "*", "Mod", "^", "root", "logBase",
       "-", "+", "("].includes(arrCalc[arrCalc.length - 1])) {
       addExp();
       arrCalc.push(x);
@@ -663,7 +644,7 @@ document.addEventListener("click", (event) => {
     arrSmall = arrCalc.concat("=");
     isNextNumber = true;
     isChangedOperator = false;
-    calcInBracks(arrCalc);
+    calcInBrackets(arrCalc);
     calcOutside(arrCalc);
     addElemArrLog();
     showArrLog();
@@ -678,6 +659,9 @@ document.addEventListener("click", (event) => {
 });
 
 startBracket.onclick = () => {
+  if (smallArea.textContent.endsWith("=")) {
+    arrCalc.length = 0;
+  }
   if (!error) {
     arrCalc.push("(");
     smallArea.innerHTML = arrCalc.join("");
@@ -702,208 +686,191 @@ endBracket.onclick = () => {
 };
 
 pi.onclick = () => {
-  if (!error) bigArea.innerHTML = Math.PI;
+  if (!error) bigArea.innerHTML = `${Math.PI}`;
 };
 
 euler.onclick = () => {
-  if (!error) bigArea.innerHTML = Math.E;
+  if (!error) bigArea.innerHTML = `${Math.E}`;
 };
 
-class Push {
-  constructor(elem) {
-    let name = elem;
-    this.name = name;
-    name.onclick = this.onClick.bind(this);
-  }
 
-  sqrX() {
-    this.beforeBrack = "sqr(";
-  }
+tableMain.addEventListener("click", {
+  handleEvent(event) {
+    let actBracket = event.target.dataset.actbracket;
+    if (actBracket && !error) {
+      this[actBracket]();
 
-  oneDivideX() {
-    this.beforeBrack = "1/(";
-  }
-
-  moduleX() {
-    this.beforeBrack = "abs(";
-  }
-
-  floorX() {
-    this.beforeBrack = "floor(";
-  }
-
-  ceilX() {
-    this.beforeBrack = "ceil(";
-  }
-
-  dms() {
-    this.beforeBrack = "dms(";
-  }
-
-  deg() {
-    this.beforeBrack = "degrees(";
-  }
-
-  sqrtX() {
-    this.beforeBrack = "&radic;(";
-  }
-
-  fact() {
-    this.beforeBrack = "fact(";
-  }
-
-  tenX() {
-    this.beforeBrack = "10^(";
-  }
-
-  lg() {
-    this.beforeBrack = "log(";
-  }
-
-  ln() {
-    this.beforeBrack = "ln(";
-  }
-
-  cubeX() {
-    this.beforeBrack = "cube(";
-  }
-
-  cubeRootX() {
-    this.beforeBrack = "cuberoot(";
-  }
-
-  twoX() {
-    this.beforeBrack = "2^(";
-  }
-
-  eX() {
-    this.beforeBrack = "e^(";
-  }
-
-  negate() {
-    this.beforeBrack = "negate(";
-  }
-
-  sin() { }
-
-  cos() { }
-
-  tan() { }
-
-  sec() { }
-
-  csc() { }
-
-  cot() { }
-
-  onClick(event) {
-    let actBrack = event.target.dataset.actbrack;
-    if (actBrack && !error) {
-      this[actBrack]();
-
-      if (!this.beforeBrack) {
+      if (!this.beforeBracket) {
         if (trigSecondIsOpened && hypIsOpened) {
-          this.beforeBrack = `${actBrack}h<sup>-1</sup>(`;
+          this.beforeBracket = `${actBracket}h<sup>-1</sup>(`;
         } else if (trigSecondIsOpened) {
           if (angleUnit === "DEG") {
-            this.beforeBrack = `${actBrack}<sub>0</sub><sup>-1</sup>(`;
+            this.beforeBracket = `${actBracket}<sub>0</sub><sup>-1</sup>(`;
           } else if (angleUnit === "RAD") {
-            this.beforeBrack = `${actBrack}<sub>r</sub><sup>-1</sup>(`;
+            this.beforeBracket = `${actBracket}<sub>r</sub><sup>-1</sup>(`;
           } else if (angleUnit === "GRAD") {
-            this.beforeBrack = `${actBrack}<sub>g</sub><sup>-1</sup>(`;
+            this.beforeBracket = `${actBracket}<sub>g</sub><sup>-1</sup>(`;
           }
         } else if (hypIsOpened) {
-          this.beforeBrack = `${actBrack}h(`;
+          this.beforeBracket = `${actBracket}h(`;
         } else {
-          if (angleUnit === "DEG") this.beforeBrack = `${actBrack}<sub>0</sub>(`;
-          if (angleUnit === "RAD") this.beforeBrack = `${actBrack}<sub>r</sub>(`;
-          if (angleUnit === "GRAD") this.beforeBrack = `${actBrack}<sub>g</sub>(`;
+          if (angleUnit === "DEG") this.beforeBracket = `${actBracket}<sub>0</sub>(`;
+          if (angleUnit === "RAD") this.beforeBracket = `${actBracket}<sub>r</sub>(`;
+          if (angleUnit === "GRAD") this.beforeBracket = `${actBracket}<sub>g</sub>(`;
         }
-        document.querySelector(".hiddenOverley").classList.toggle("show");
-        hideButtons(trigAndFuction);
+        document.querySelector(".hiddenOverlay").classList.toggle("show");
+        hideButtons(greySecond);
       }
 
       if (isNextNumber && smallArea.textContent.endsWith("=")) {
-        arrCalc.unshift(this.beforeBrack);
+        arrCalc.unshift(this.beforeBracket);
         arrCalc.push(")");
       } else if (arrCalc[arrCalc.length - 1] !== ")") {
         absArr = parseFloat(bigArea.textContent);
-        arrCalc.push(this.beforeBrack, `${absArr}`, ")");
+        arrCalc.push(this.beforeBracket, `${absArr}`, ")");
       } else if (arrCalc[arrCalc.length - 1] === ")") {
-        let openBrack = 0;
-        let closeBrack = 1;
-        let i = arrCalc.length - 2;
-        while (openBrack !== closeBrack) {
-          if (arrCalc[i] === ")") closeBrack += 1;
-          if (arrActions.concat("(").includes(arrCalc[i])) openBrack += 1;
-          i--;
-        }
-
-        absArr = arrCalc.slice(i + 1, arrCalc.length);
-        calcInBracks(absArr);
-        if (arrCalc[i + 1] === "(") {
-          arrCalc.splice(i + 1, 1, this.beforeBrack);
-        } else if (arrActions.includes(arrCalc[i + 1])) {
-          arrCalc.splice(i + 1, 0, this.beforeBrack);
+        getExpression();
+        absArr = arrCalc.slice(b + 1, arrCalc.length);
+        calcInBrackets(absArr);
+        if (arrCalc[b + 1] === "(") {
+          arrCalc.splice(b + 1, 1, this.beforeBracket);
+        } else if (arrActions.includes(arrCalc[b + 1])) {
+          arrCalc.splice(b + 1, 0, this.beforeBracket);
           arrCalc.push(")");
         }
       }
       calcInterimResult();
       smallArea.innerHTML = arrCalc.join("");
       isNextNumber = true;
-      /* this.beforeBrack = null; */
+
     }
-  }
-}
-// const table = document.getElementById("table");
-new Push(table);
+  },
+
+  "sqrX"() {
+    this.beforeBracket = "sqr(";
+  },
+
+  "oneDivideX"() {
+    this.beforeBracket = "1/(";
+  },
+
+  "moduleX"() {
+    this.beforeBracket = "abs(";
+  },
+
+  "floorX"() {
+    this.beforeBracket = "floor(";
+  },
+
+  "ceilX"() {
+    this.beforeBracket = "ceil(";
+  },
+
+  "sqrtX"() {
+    this.beforeBracket = "&radic;(";
+  },
+
+  "fact"() {
+    this.beforeBracket = "fact(";
+  },
+
+  "tenX"() {
+    this.beforeBracket = "10^(";
+  },
+
+  "lg"() {
+    this.beforeBracket = "log(";
+  },
+
+  "ln"() {
+    this.beforeBracket = "ln(";
+  },
+
+  "cubeX"() {
+    this.beforeBracket = "cube(";
+  },
+
+  "cubeRootX"() {
+    this.beforeBracket = "cuberoot(";
+  },
+
+  "twoX"() {
+    this.beforeBracket = "2^(";
+  },
+
+  "eX"() {
+    this.beforeBracket = "e^(";
+  },
+
+  "negate"() {
+    this.beforeBracket = "negate(";
+  },
+
+  "sin"() {
+  },
+
+  "cos"() {
+  },
+
+  "tan"() {
+  },
+
+  "sec"() {
+  },
+
+  "csc"() {
+  },
+
+  "cot"() {
+  },
+});
 
 exp.onclick = () => {
   if (!error) {
-    bigArea.insertAdjacentText("beforeEnd", ",e+0");
+    bigArea.insertAdjacentText("beforeend", ",e+0");
   }
 };
 
-deg.onclick = () => {
+angle.onclick = () => {
   if (!error) {
     if (angleUnit === "DEG") {
-      deg.innerHTML = "RAD";
+      angle.innerHTML = "RAD";
       angleUnit = "RAD";
     } else if (angleUnit === "RAD") {
-      deg.innerHTML = "GRAD";
+      angle.innerHTML = "GRAD";
       angleUnit = "GRAD";
     } else {
-      deg.innerHTML = "DEG";
+      angle.innerHTML = "DEG";
       angleUnit = "DEG";
     }
   }
 };
 
 rand.onclick = () => {
-  bigArea.innerHTML = Math.random();
+  bigArea.innerHTML = `${Math.random()}`;
 };
 
 clean.onclick = () => {
   if (error) {
     correctError();
   } else if (clean.textContent === "C") {
-    bigArea.innerHTML = 0;
+    bigArea.innerHTML = "0";
     smallArea.innerHTML = "";
     operator = null;
     x = null;
     arrCalc.length = 0;
   } else if (smallArea.textContent.includes("=")) {
-    bigArea.innerHTML = 0;
+    bigArea.innerHTML = "0";
     smallArea.innerHTML = "";
   } else {
-    bigArea.innerHTML = 0;
+    bigArea.innerHTML = "0";
   }
   clean.innerHTML = "C";
 };
 
 function showTrigElems() {
   arrTrigElems.forEach((item) => {
-    const text = item.dataset.actbrack;
+    const text = item.dataset.actbracket;
     let itemText = item;
     if (trigSecondIsOpened && hypIsOpened) {
       itemText.innerHTML = `${text}h<sup>-1</sup>`;
@@ -915,18 +882,6 @@ function showTrigElems() {
       itemText.innerHTML = text;
     }
   });
-  /*   for (let elem of trigElems) {
-      const text = elem.dataset.actbrack;
-      if (trigSecondIsOpened && hypIsOpened) {
-        elem.innerHTML = `${text}h<sup>-1</sup>`;
-      } else if (trigSecondIsOpened && !hypIsOpened) {
-        elem.innerHTML = `${text}<sup>-1</sup>`;
-      } else if (!trigSecondIsOpened && hypIsOpened) {
-        elem.innerHTML = `${text}h`;
-      } else {
-        elem.innerHTML = text;
-      }
-    } */
 }
 
 trigSecond.onclick = (e) => {

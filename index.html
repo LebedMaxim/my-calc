@@ -1,79 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 
 <head>
-	<meta charset="utf-8">
-	<title>Обычный</title>
-	<link rel="stylesheet" type="text/css" href="index.css">
+  <meta charset="utf-8">
+  <title>Обычный</title>
+  <link rel="stylesheet" type="text/css" href="core.css">
+  <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
-<body>	
-	<div id="tableContainer">
-		<div id="tableRow">
-			<button class="sandwich">&equiv;</button>
-			<nav class="sideMenu">
-				<div class="text">
-					<button class="sandwich opened">&equiv;</button>
-					Калькулятор
-				</div>
-				<ul>
-					<li class="currentMenuItem"><a href="index.html">ОБЫЧНЫЙ</a></li>
-					<li><a href="engineering.html">ИНЖЕНЕРНЫЙ</a></li>
-				</ul>
-			</nav>
+<body>
 
-			<section class="main">
-				<table>
-					<div id="smallArea"></div>
-					<caption id="bigArea"></caption>
-					<tr>
-						<td><button id="percent" class="button grey">%</button></td>
-						<td><button id="cleanEntry" class="button grey">CE</button></td>
-						<td><button id="clean" class="button grey">C</button></td>
-						<td><button id="backSpace" class="button grey">&larr;</button></td>
-					</tr>
-					<tr>
-						<td><button id="oneDivideX" class="button grey">1/x</button></td>
-						<td><button id="sqrX" class="button grey">x<sup>2</sup></button></td>
-						<td><button id="sqrtX" class="button grey">&radic;x</button></td>
-						<td><button data-operator="divide" value="/" class="button grey">&divide;</button></td>
-					<tr>
-						<td><button data-number value="7" class="button grey">7</button></td>
-						<td><button data-number value="8" class="button grey">8</button></td>
-						<td><button data-number value="9" class="button grey">9</button></td>
-						<td><button data-operator="multiply" value="*" class="button grey">&#10006;</button></td>
-					</tr>
-					<tr>
-						<td><button data-number value="4" class="button grey">4</button></td>
-						<td><button data-number value="5" class="button grey">5</button></td>
-						<td><button data-number value="6" class="button grey">6</button></td>
-						<td><button data-operator="minus" value="-" class="button grey">-</button></td>
-					</tr>
-					<tr>
-						<td><button data-number value="1" class="button grey">1</td>
-						<td><button data-number value="2" class="button grey">2</button></td>
-						<td><button data-number value="3" class="button grey">3</button></td>
-						<td><button data-operator="plus" value="+" class="button grey">+</button></td>
-					</tr>
-					<tr>
-						<td><button id="negative" class="button grey">+/-</button></td>
-						<td><button data-number value="0" class="button grey">0</button></td>
-						<td><button id="fract" class="button grey">,</button></td>
-						<td><button data-equal value="=" class="button blue">=</button></td>
-					</tr>
-				</table>
-			</section>
+<div id="tableContainer">
+  <div id="tableRow">
+    <button class="sandwich">&equiv;</button>
+    <nav class="sideMenu">
+      <div class="text">
+        <button class="sandwich opened">&equiv;</button>
+        Калькулятор
+      </div>
+      <ul>
+        <li class="currentMenuItem"><a href="index.html">ОБЫЧНЫЙ</a></li>
+        <li><a href="engineering.html">ИНЖЕНЕРНЫЙ</a></li>
+        <li id="programInfo"><a href="">О программе</a></li>
+      </ul>
+    </nav>
 
-		</div>
-	</div>
+    <section class="main">
+      <table>
+        <tr>
+          <td colspan="4" id="smallArea"></td>
+        </tr>
+        <tr>
+          <td colspan="4" id="bigArea"></td>
+        </tr>
+        <tr>
+          <td>
+            <button id="percent" class="button grey">%</button>
+          </td>
+          <td>
+            <button id="cleanEntry" class="button grey">CE</button>
+          </td>
+          <td>
+            <button id="clean" class="button grey">C</button>
+          </td>
+          <td>
+            <button id="backSpace" class="button grey">&larr;</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button id="oneDivideX" class="button grey">1/x</button>
+          </td>
+          <td>
+            <button id="sqrX" class="button grey">x<sup>2</sup></button>
+          </td>
+          <td>
+            <button id="sqrtX" class="button grey">&radic;x</button>
+          </td>
+          <td>
+            <button data-operator="divide" value="/" class="button grey">&divide;</button>
+          </td>
+        <tr>
+          <td>
+            <button data-number value="7" class="button grey">7</button>
+          </td>
+          <td>
+            <button data-number value="8" class="button grey">8</button>
+          </td>
+          <td>
+            <button data-number value="9" class="button grey">9</button>
+          </td>
+          <td>
+            <button data-operator="multiply" value="*" class="button grey">&#10006;</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button data-number value="4" class="button grey">4</button>
+          </td>
+          <td>
+            <button data-number value="5" class="button grey">5</button>
+          </td>
+          <td>
+            <button data-number value="6" class="button grey">6</button>
+          </td>
+          <td>
+            <button data-operator="minus" value="-" class="button grey">-</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button data-number value="1" class="button grey">1</button>
+          </td>
+          <td>
+            <button data-number value="2" class="button grey">2</button>
+          </td>
+          <td>
+            <button data-number value="3" class="button grey">3</button>
+          </td>
+          <td>
+            <button data-operator="plus" value="+" class="button grey">+</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button id="negative" class="button grey">+/-</button>
+          </td>
+          <td>
+            <button data-number value="0" class="button grey">0</button>
+          </td>
+          <td>
+            <button id="fraction" class="button grey">,</button>
+          </td>
+          <td>
+            <button data-equal value="=" class="button blue">=</button>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-	<footer>
-		2021, Максим Лебедь
-		<br>
-		maxle130691@gmail.com
-	</footer>
+  </div>
+</div>
 
-	<div class="hiddenOverley"></div>
-	<script src="index.js"></script>
+<!--<footer>-->
+<!--  2022, Максим Лебедь-->
+<!--  <br>-->
+<!--  maxle130691@gmail.com-->
+<!--</footer>-->
+
+<div class="hiddenOverlay"></div>
+<script src="core.js"></script>
+<script src="index.js"></script>
 </body>
 </html>
